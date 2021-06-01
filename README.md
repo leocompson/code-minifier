@@ -2,10 +2,10 @@ Code Minifier application enables you to minify JavaScript, CSS, and HTML codes.
 
 You can install this app as a PWA on your mobile device, moreover, it is available as a browser extension as-well-as a web application:
 
-Chrome: 
-Edge: 
-Firefox: 
-Opera: 
+Chrome:  
+Edge:  
+Firefox:  
+Opera:  
 Webapp & PWA: https://webbrowsertools.com/code-minifier/  
 
 --------------------------------------------------------------  
