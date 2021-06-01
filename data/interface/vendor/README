@@ -1,0 +1,14 @@
+This app uses the following opensource JavaScript libraries:
+
+A) CodeMirror (https://github.com/codemirror/CodeMirror)
+1) vendor/codemirror/codemirror.js >> https://cdn.jsdelivr.net/npm/codemirror@5.61.1/lib/codemirror.js
+2) vendor/codemirror/codemirror.css >> https://cdn.jsdelivr.net/npm/codemirror@5.61.1/lib/codemirror.css
+
+3) vendor/codemirror/css.js >> https://cdn.jsdelivr.net/npm/codemirror@5.61.1/mode/css/css.js
+4) vendor/codemirror/xml.js >> https://cdn.jsdelivr.net/npm/codemirror@5.61.1/mode/xml/xml.js
+5) vendor/codemirror/htmlmixed.js >> https://cdn.jsdelivr.net/npm/codemirror@5.61.1/mode/htmlmixed/htmlmixed.js
+6) vendor/codemirror/javascript.js >> https://cdn.jsdelivr.net/npm/codemirror@5.61.1/mode/javascript/javascript.js
+
+B) terser (https://github.com/terser/terser)
+1) bundle.min.js: https://cdn.jsdelivr.net/npm/terser@5.7.0/dist/bundle.min.js
+2) htmlminifier.min.js: https://github.com/terser/html-minifier-terser/archive/refs/tags/v5.1.1.zip >> dist >> htmlminifier.min.js
