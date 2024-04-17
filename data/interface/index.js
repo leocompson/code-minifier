@@ -18,6 +18,25 @@ var config  = {
       "mode": "text/javascript"
     }
   },
+  "render": function (e) {
+    if (e.data.from === "app") {
+      if (e.data.name === "context") {
+        config.storage.load(config.app.start);
+      }
+      /*  */
+      if (e.data.name === "result") {
+        config.codemirror.editor.input.setValue(e.data.value);
+        window.setTimeout(function () {minifybutton.click()}, 300);
+      }
+      /*  */
+      if (e.data.name === "storage") {
+        if (e.data.action === "load") {
+          config.storage.local = e.data.storage;
+          config.storage.callback();
+        }
+      }
+    }
+  },
   "minifier": {
     "language": '',
     "options": {
@@ -50,20 +69,6 @@ var config  = {
       }
     }
   },
-  "resize": {
-    "timeout": null,
-    "method": function () {
-      config.app.update.style();
-      /*  */
-      if (config.resize.timeout) window.clearTimeout(config.resize.timeout);
-      config.resize.timeout = window.setTimeout(function () {
-        config.storage.write("size", {
-          "width": window.innerWidth || window.outerWidth,
-          "height": window.innerHeight || window.outerHeight
-        });
-      }, 1000);
-    }
-  },
   "storage": {
     "local": {},
     "callback": null,
@@ -82,7 +87,7 @@ var config  = {
     "write": function (id, data) {
       if (id) {
         if (data !== '' && data !== null && data !== undefined) {
-          var tmp = {};
+          let tmp = {};
           tmp[id] = data;
           config.storage.local[id] = data;
           if (config.window.normal) {
@@ -102,14 +107,14 @@ var config  = {
     }
   },
   "load": function () {
-    var clear = document.getElementById("clear");
-    var select = document.getElementById("select");
-    var fileio = document.getElementById("fileio");
-    var language = document.getElementById("language");
-    var download = document.getElementById("download");
-    var clipboard = document.getElementById("clipboard");
-    var file = document.querySelector("input[type='file']");
-    var minifybutton = document.getElementById("minifybutton");
+    const clear = document.getElementById("clear");
+    const select = document.getElementById("select");
+    const fileio = document.getElementById("fileio");
+    const language = document.getElementById("language");
+    const download = document.getElementById("download");
+    const clipboard = document.getElementById("clipboard");
+    const file = document.querySelector("input[type='file']");
+    const minifybutton = document.getElementById("minifybutton");
     /*  */
     fileio.addEventListener("click", function () {file.click()}, false);
     download.addEventListener("click", config.app.download.result, false);
@@ -135,7 +140,7 @@ var config  = {
     /*  */
     clipboard.addEventListener("click", function () {
       if (config.codemirror.editor.output) {
-        var textarea = document.createElement("textarea");
+        const textarea = document.createElement("textarea");
         /*  */
         select.click();
         document.body.appendChild(textarea);
@@ -160,14 +165,14 @@ var config  = {
     });
     /*  */
     minifybutton.addEventListener("click", async function () {
-      var txt = config.codemirror.editor.input.getValue();
+      const txt = config.codemirror.editor.input.getValue();
       if (txt) {
         try {
-          var tmp = config.minifier.language.replace("text/", '');
+          const tmp = config.minifier.language.replace("text/", '');
           /*  */
           if (tmp === "javascript") {
             config.app.engine = Terser.minify;
-            var result = await config.app.engine(txt, config.minifier.options.a);
+            const result = await config.app.engine(txt, config.minifier.options.a);
             if (result) {
               if (result.code) {
                 config.codemirror.editor.output.setValue(result.code);
@@ -175,7 +180,7 @@ var config  = {
             }
           } else {
             config.app.engine = require("html-minifier-terser").minify;
-            var result = config.app.engine(txt, config.minifier.options.b);          
+            const result = config.app.engine(txt, config.minifier.options.b);          
             if (result) {
               config.codemirror.editor.output.setValue(result);
             }
@@ -199,8 +204,8 @@ var config  = {
     "show": {
       "error": {
         "message": function (e) {
-          var fileio = document.getElementById("fileio");
-          var minifybutton = document.getElementById("minifybutton");
+          const fileio = document.getElementById("fileio");
+          const minifybutton = document.getElementById("minifybutton");
           /*  */
           fileio.disabled = false;
           minifybutton.disabled = false;
@@ -212,7 +217,7 @@ var config  = {
     },
     "reset": {
       "editor": function () {        
-        var reset = config.storage.read("reset") !== undefined ? config.storage.read("reset") : true;
+        const reset = config.storage.read("reset") !== undefined ? config.storage.read("reset") : true;
         if (reset) {
           if (config.window.normal) {
             fetch("resources/sample.js").then(function (e) {return e.text()}).then(function (e) {
@@ -231,13 +236,13 @@ var config  = {
     },
     "download": {
       "result": function () {
-        var txt = config.codemirror.editor.output.getValue();
+        const txt = config.codemirror.editor.output.getValue();
         if (txt) {
-          var tmp = config.minifier.language.replace("text/", '');
-          var filename = config.app.file.name ? "beautified-" + config.app.file.name : "result." + (tmp === "javascript" ? "js" : tmp);
+          const tmp = config.minifier.language.replace("text/", '');
+          const filename = config.app.file.name ? "beautified-" + config.app.file.name : "result." + (tmp === "javascript" ? "js" : tmp);
           /*  */
           if (config.window.normal) {
-            var a = document.createElement('a');
+            const a = document.createElement('a');
             /*  */
             a.style.display = "none";  
             a.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(e.data.txt));
@@ -257,19 +262,19 @@ var config  = {
       "process": function (file, callback) {
         if (!file) return;
         /*  */
-        var type = file.type; 
+        const type = file.type; 
         config.app.file.name = file.name;
-        var language = document.getElementById("language");
+        const language = document.getElementById("language");
         /*  */
         if (type === "text/css" || type === "text/html" || type === "text/javascript") {
           language.value = type;
           language.dispatchEvent(new Event("change"));
         }
         /*  */
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.readAsText(file);
         reader.onload = function (e) {
-          var content = e.target.result;
+          const content = e.target.result;
           if (content) callback(content);
         };
       }
@@ -280,7 +285,7 @@ var config  = {
         config.container.header = document.querySelector(".header");
         config.container.output = document.querySelector(".output");
         /*  */
-        var offset = parseInt(window.getComputedStyle(config.container.header).height);
+        const offset = parseInt(window.getComputedStyle(config.container.header).height);
         config.container.input.style.height = window.innerWidth < 700 ? "calc(50vh - " + (offset / 2 + 15) + "px)" : "calc(100vh - " + (offset + 15) + "px)";
         config.container.output.style.height = window.innerWidth < 700 ? "calc(50vh - " + (offset / 2 + 15) + "px)" : "calc(100vh - " + (offset + 15) + "px)";
       },
@@ -303,11 +308,11 @@ var config  = {
       }
     },
     "start": function () {
-      var input = document.getElementById("input");
-      var output = document.getElementById("output");
-      var language = document.getElementById("language");
-      var settings = document.querySelector(".settings");
-      var minifybutton = document.getElementById("minifybutton");
+      const input = document.getElementById("input");
+      const output = document.getElementById("output");
+      const language = document.getElementById("language");
+      const settings = document.querySelector(".settings");
+      const minifybutton = document.getElementById("minifybutton");
       /*  */
       config.container.inputs = [...settings.querySelectorAll("input")];
       config.minifier.language = config.storage.read("language") !== undefined ? config.storage.read("language") : "text/javascript";
@@ -321,7 +326,7 @@ var config  = {
       config.container.inputs.map(function (input) {
         if (input.id in config.minifier.options.a) {
           if (config.minifier.options.a[input.id] !== undefined) {
-            var type = input.getAttribute("type");
+            const type = input.getAttribute("type");
             if (type !== "object") {
               input[type === "checkbox" ? "checked" : "value"] = config.minifier.options.a[input.id];
             }
@@ -330,7 +335,7 @@ var config  = {
         /*  */
         if (input.id in config.minifier.options.b) {
           if (config.minifier.options.b[input.id] !== undefined) {
-            var type = input.getAttribute("type");
+            const type = input.getAttribute("type");
             if (type !== "object") {
               input[type === "checkbox" ? "checked" : "value"] = config.minifier.options.b[input.id];
             }
@@ -338,9 +343,9 @@ var config  = {
         }
         /*  */
         input.addEventListener("change", function (e) {
-          var tmp = {};
-          var type = {};
-          var object = {};
+          const tmp = {};
+          const type = {};
+          const object = {};
           /*  */
           object.a = config.minifier.options.a[e.target.id] !== undefined;
           if (object.a) {
@@ -373,25 +378,5 @@ var config  = {
   }
 };
 
-window.addEventListener("message", function (e) {  
-  if (e.data.from === "app") {
-    if (e.data.name === "context") {
-      config.storage.load(config.app.start);
-    }
-    /*  */
-    if (e.data.name === "result") {
-      config.codemirror.editor.input.setValue(e.data.value);
-      window.setTimeout(function () {minifybutton.click()}, 300);
-    }
-    /*  */
-    if (e.data.name === "storage") {
-      if (e.data.action === "load") {
-        config.storage.local = e.data.storage;
-        config.storage.callback();
-      }
-    }
-  }
-}, false);
-
 window.addEventListener("load", config.load, false);
-window.addEventListener("resize", config.resize.method, false);
+window.addEventListener("message", config.render, false);

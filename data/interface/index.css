@@ -26,12 +26,14 @@ details[open] {
 summary {
   border: 0;
   margin: 0;
-  color: #555;
+  color: #333;
+  padding: 14px;
   outline: none;
   cursor: pointer;
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 600;
   user-select: none;
-  padding: 14px 10px;
+  letter-spacing: 1px;
   font-family: monospace;
   text-transform: uppercase;
 }
@@ -72,7 +74,7 @@ summary:focus {
 
 .section select, .section button, .section input[type='file'] {
   margin: 0;
-  color: #555;
+  color: #333;
   width: 52px;
   cursor: auto;
   height: 42px;
@@ -80,7 +82,7 @@ summary:focus {
   min-width: 52px;
   max-width: 52px;
   padding: 0 10px;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
   overflow: hidden;
   background: #fff;
@@ -100,7 +102,7 @@ summary:focus {
 }
 
 .section select, .section button {
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
 }
 
@@ -144,7 +146,7 @@ summary:focus {
   float: right;
   outline: none;
   color: #0075ff;
-  font-size: 12px;
+  font-size: 13px;
   font-family: monospace;
   vertical-align: middle;
   box-sizing: border-box;
@@ -177,10 +179,10 @@ summary:focus {
 
 .settings table tr td label {
   margin: 0;
-  color: #555;
+  color: #333;
   min-width: 50%;
   padding: 10px 0;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
   text-align: left;
   user-select: none;
@@ -208,7 +210,7 @@ summary:focus {
   width: 100%;
   height: 100%;
   outline: none;
-  font-size: 12px;
+  font-size: 13px;
   min-height: 200px;
   font-family: monospace;
 }
@@ -216,7 +218,7 @@ summary:focus {
 .result .CodeMirror {
   color: #333;
   height: 100%;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 18px;
 }
 
@@ -226,8 +228,10 @@ summary:focus {
 }
 
 #minifybutton, #language {
-  width: 109px;
+  width: 120px;
   max-width: unset;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 @media (max-width: 700px) {
