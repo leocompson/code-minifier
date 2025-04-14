@@ -35,6 +35,14 @@ var config  = {
           config.storage.callback();
         }
       }
+      /*  */
+      if (e.data.name === "theme") {
+        if (e.data.action === "toggle") {
+          document.documentElement.setAttribute("theme", e.data.theme);
+          config.codemirror.editor.input.setOption("theme", e.data.theme === "dark" ? "material-darker" : "default");
+          config.codemirror.editor.output.setOption("theme", e.data.theme === "dark" ? "material-darker" : "default");
+        }
+      }
     }
   },
   "minifier": {
@@ -313,8 +321,10 @@ var config  = {
       const language = document.getElementById("language");
       const settings = document.querySelector(".settings");
       const minifybutton = document.getElementById("minifybutton");
+      const theme = config.storage.read("theme") !== undefined ? config.storage.read("theme") : "light";
       /*  */
       config.container.inputs = [...settings.querySelectorAll("input")];
+      document.documentElement.setAttribute("theme", theme !== undefined ? theme : "light");
       config.minifier.language = config.storage.read("language") !== undefined ? config.storage.read("language") : "text/javascript";
       config.minifier.options = config.storage.read("options") !== undefined ? config.storage.read("options") : config.minifier.options;
       /*  */
@@ -322,6 +332,8 @@ var config  = {
       config.codemirror.options.mode = config.minifier.language;
       config.codemirror.editor.input = CodeMirror.fromTextArea(input, config.codemirror.options);
       config.codemirror.editor.output = CodeMirror.fromTextArea(output, config.codemirror.options);
+      config.codemirror.editor.input.setOption("theme", theme === "dark" ? "material-darker" : "default");
+      config.codemirror.editor.output.setOption("theme", theme === "dark" ? "material-darker" : "default");
       /*  */
       config.container.inputs.map(function (input) {
         if (input.id in config.minifier.options.a) {

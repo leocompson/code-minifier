@@ -73,6 +73,7 @@ var config = {
     }
   },
   "load": function () {
+    const theme = document.getElementById("theme");
     const reload = document.getElementById("reload");
     const support = document.getElementById("support");
     const donation = document.getElementById("donation");
@@ -93,6 +94,15 @@ var config = {
         const url = config.addon.homepage() + "?reason=support";
         chrome.tabs.create({"url": url, "active": true});
       }
+    }, false);
+    /*  */
+    theme.addEventListener("click", function () {
+      let attribute = document.documentElement.getAttribute("theme");
+      attribute = attribute === "dark" ? "light" : "dark";
+      /*  */
+      config.storage.write("theme", attribute);
+      document.documentElement.setAttribute("theme", attribute);
+      config.iframe.window.postMessage({"name": "theme", "from": "app", "action": "toggle", "theme": attribute}, '*');
     }, false);
     /*  */
     window.removeEventListener("load", config.load, false);
@@ -134,6 +144,9 @@ var config = {
         /*  */
         if (e.data.action === "load") {
           chrome.storage.local.get(null, function (storage) {
+            const theme = storage.theme !== undefined ? storage.theme : "light";
+            /*  */
+            document.documentElement.setAttribute("theme", theme !== undefined ? theme : "light");
             config.iframe.window.postMessage({"name": "storage", "from": "app", "action": "load", "storage": storage}, '*');
           });
         }
